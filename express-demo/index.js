@@ -1,17 +1,31 @@
 const Joi = require('joi');
+const helmet = require('helmet')
+const morgan = require('morgan')
 const express = require('express');
 const { exist } = require('joi');
 const app = express();
-const logger = require('./logger')
-//later::
+const logger = require('./logger');
+const { urlencoded } = require('express');
+//middleware:://
+
+//built-in middleware 
+
 app.use(express.json())
+app.use(express.urlencoded({ extended:true }));
+app.use(express.static('public'))
 
 //creating middleware:://
 app.use(logger);
+
 app.use(function(req,res,next){
     console.log('authenticating...')
     next();
 })
+//3rd party middleware:://
+app.use(helmet());
+app.use(morgan('tiny'))
+
+
 const courses = [{id:1,name:'saptarshi'},
 {id:2,name:'saptarshi'},
 {id:3,name:'saptarshi'}]
