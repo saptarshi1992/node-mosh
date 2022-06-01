@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const config = require('config');
 const helmet = require('helmet')
 const morgan = require('morgan')
 const express = require('express');
@@ -23,7 +24,14 @@ app.use(function(req,res,next){
 })
 //3rd party middleware:://
 app.use(helmet());
-app.use(morgan('tiny'))
+//app.use(morgan('tiny'))
+/*if(app.get('env') ==='production'){
+    app.use(morgan('tiny'))
+}*/
+//config://
+console.log(`app is running in::${config.get('name')}`)
+console.log(`app is running in::${config.get('mail.host')}`)
+console.log(`app is running in::${config.get('mail.password')}`)
 
 
 const courses = [{id:1,name:'saptarshi'},

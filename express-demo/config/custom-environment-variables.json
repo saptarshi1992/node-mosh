@@ -1,0 +1,6 @@
+{
+    "mail":{  
+    "host":"devel-express-demo",
+    "password":"express_app_password"
+   }
+}
