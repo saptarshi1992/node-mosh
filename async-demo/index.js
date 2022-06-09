@@ -1,10 +1,19 @@
  console.log('before')
- getUserId(1,(user)=>{
-   console.log('user',user)
-  getRepo(user.gitUserid,(repos)=>{
-    console.log('repos',repos)
-  })
- })
+
+ //Async function::
+
+ getUserId(1,userData)
+
+ function userData(user){
+  getRepo(user.gitUserid,getRepos)
+ }
+ function getRepos(repos){
+  getCommit(repos[0],displayCommit)
+ }
+ function displayCommit(commit){
+   console.log(commit)
+ }
+ 
  //console.log(getData)
  //callbacks
  //async
@@ -23,5 +32,11 @@ function getRepo(username,callback){
   setTimeout(()=>{
     console.log('fetching Github repo..')
     callback(['repo1','repo2','repo3'])
+  },2000)
+}
+function getCommit(repo,callback){
+  setTimeout(()=>{
+    console.log('getting commit message')
+    callback({repo:repo,commit:'new-commit'})
   },2000)
 }
