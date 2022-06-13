@@ -1,3 +1,4 @@
+//convert it into Async and Await:
 
 getCustomer(1, (customer) => {
   console.log('Customer: ', customer);
