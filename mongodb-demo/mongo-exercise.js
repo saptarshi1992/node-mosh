@@ -56,6 +56,13 @@ async function updateData(id){
 
     console.log(course)
 }
-updateData('5a68ff090c553064a218a547')
+//delete from database://
+async function deleteDoc(id){
+   const result =  await Course.deleteOne({_id:id})
+   //const course = await Course.findByIdAndRemove(id)
+   console.log(result)
+}
+//updateData('5a68ff090c553064a218a547')
+deleteDoc('5a68ff090c553064a218a547')
 
 
