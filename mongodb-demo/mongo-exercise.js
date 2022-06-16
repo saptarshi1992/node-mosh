@@ -19,9 +19,13 @@ const Course = new mongoose.model('Course', createSchema)
 })*/
 async function getdata() {
     const courses = await Course
-        .find({ isPublished: true, tags: 'backend' })
-        .sort({ name: -1 })
-        .select({ name: 1, author: 1 })
+        .find({isPublished:true})
+        .or([{price:{$gte:15}},{name: /.*by.*/i}])
+        /*.find({isPublished:true})
+        //.find({ isPublished: true, tags:{$in:['fronetend','backend']} }) //for exercise:2
+          .or([{tags:'frontend'},{tags:'backend'}])*/
+        .sort({price: -1})
+        .select({ name: 1, author: 1 ,price: 1})
     console.log(courses)
 }
 getdata()
