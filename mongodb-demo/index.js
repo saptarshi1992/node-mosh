@@ -6,28 +6,61 @@ mongoose.connect('mongodb://0.0.0.0:27017/playground')
 //create schema for collections:
 
 const createSchema = mongoose.Schema({
-    name: String,
+    name: {
+        type:String,
+        required:true,
+        minlength:3,
+        maxlength:20
+    },
+    catagory:{
+       type:String,
+       required:true,
+       enum:['web','apps','network']
+    },
     author: String,
-    tags: [String],
-    price: Number,
+    //custom validator//
+    tags: {
+        type:Array,
+        isAsync:true,
+        validate:{
+            validator: function(v,callback){
+                const result = v && v.length > 0
+                callback(result)
+            },
+            message:'a course should have one tag'
+        }
+    },
     date: { type: Date, default: Date.now },
-    isPublished: Boolean
+    isPublished: Boolean,
+    price: {
+        type:Number,
+        required: function(){
+            return this.isPublished
+        }
+    }
 })
 //compiles model()://
 const Course = new mongoose.model('course', createSchema)
 
 async function createschema() {
     const course = new Course({
-        name: 'vue-js',
-        author: 'xdfgth',
-        tags: ['reactjs', 'front-end'],
+        name: 'codeigniter-3',
+        catagory:'web',
+        author: 'brad',
+        tags:'-',
+        isPublished: true,
         price: 200,
-        isPublished: true
+       
     })
-    const result = await course.save()
-    console.log(result)
+    try{
+        const result = await course.save()
+        console.log(result)
+    }catch(ex){
+        console.log("error:",ex.message)
+    }
+    
 }
-//createschema()
+createschema()
 
 
 //get course data:;//
@@ -81,6 +114,6 @@ async function deleteData(id) {
     console.log(course)
 }
 //updateData("62ab656b51fa9f74448c76f0")
-deleteData("62ab656b51fa9f74448c76f0")
+//deleteData("62ab656b51fa9f74448c76f0")
 
 
