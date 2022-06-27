@@ -10,12 +10,15 @@ const createSchema = mongoose.Schema({
         type:String,
         required:true,
         minlength:3,
-        maxlength:20
+        maxlength:20,
+        lowercase:true,
+        trim:true
     },
     catagory:{
        type:String,
        required:true,
-       enum:['web','apps','network']
+       enum:['web','apps','network'],
+       trim:true
     },
     author: String,
     //custom validator//
@@ -23,9 +26,13 @@ const createSchema = mongoose.Schema({
         type:Array,
         isAsync:true,
         validate:{
-            validator: function(v,callback){
-                const result = v && v.length > 0
-                callback(result)
+            validator: function(v){
+                setTimeout(()=>{
+                    //console.log("tags validation failed")
+                    const result  =  v && v.length >0
+                    return result}
+                   ,1000)
+                
             },
             message:'a course should have one tag'
         }
@@ -44,17 +51,17 @@ const Course = new mongoose.model('course', createSchema)
 
 async function createschema() {
     const course = new Course({
-        name: 'codeigniter-3',
+        name: 'Codeigniter-4',
         catagory:'web',
         author: 'brad',
-        tags:'-',
+        tags:['_'],
         isPublished: true,
         price: 200,
        
     })
     try{
         const result = await course.save()
-        console.log(result)
+        console.log(result)   
     }catch(ex){
         console.log("error:",ex.message)
     }
@@ -64,6 +71,7 @@ createschema()
 
 
 //get course data:;//
+
 async function getCourse() {
     const courses = await Course
         //.find({price:{$gte:200}})
